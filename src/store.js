@@ -1,4 +1,4 @@
-import { configureStore } from './node-modules@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import counterReducer from './features/sampleSlice';
 
 export default configureStore({

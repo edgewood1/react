@@ -1,19 +1,22 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { addItem } from './features/sampleSlice';
 
-const Input = (props) => {
+const Input = () => {
   // sets state for function
   const inputRef = React.useRef();
-  
-  const handle = () => {
-    props.click();
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(addItem(inputRef.current.value));
     inputRef.current.value = '';
   };
 
   return (
     <div>
       <label htmlFor="search">Search</label>
-      <input ref={inputRef} id="search" type="text" onChange={props.search} />
-      <button onClick={handle} type="submit">
+      <input ref={inputRef} id="search" type="text" />
+      <button onClick={handleClick} type="submit">
         {' '}
         submit{' '}
       </button>

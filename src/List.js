@@ -1,60 +1,46 @@
 import React from 'react';
 import './style.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { decrement, increment } from './features/sampleSlice';
+import { deleteItem, addItem, editItem } from './features/sampleSlice';
 
-const listStyle = {
+const style = {
   display: 'flex',
 };
 
-const buttonStyle = {
-  transform: 'scale(.5)',
-};
-
 const List = (props) => {
-  const count = useSelector((state) => state.counter.value);
-  const dispatch = useDispatch();
-  dispatch(increment());
-  console.log(state.counter.value);
   const { dataItem } = props;
-  const [editState, setEditState] = React.useState(false);
-  const changeEdit = () => setEditState(!editState);
+  const dispatch = useDispatch();
+  const [editState, changeEditState] = React.useState(false);
 
-  // move editItem to App then
-  const editItem = (e) => {
+  const handleClick = (e) => {
+    console.log(e.target.id);
+    if (e.target.tagName !== 'INPUT') {
+      e.target.id === 'delete'
+        ? dispatch(deleteItem(dataItem.id))
+        : changeEditState(!editState);
+    }
+  };
+
+  const handleChange = (e) => {
     if (e.charCode === 13) {
-      const newValue = e.target.value;
-      const id = e.target.className;
-      // call parent here:
-      // const a  = new CustomeEvent('datas', {
-      //   name: x
-      // })
-      // dispatchEvent(a)
-      props.edit(newValue, id);
-      setEditState(!editState);
+      const obj = {
+        id: dataItem.id,
+        name: e.target.value,
+      };
+      dispatch(editItem(obj));
+      changeEditState(!editState);
     }
   };
 
   return (
-    <div style={listStyle} key={dataItem.id}>
-      {/* input */}
+    <div style={style} onClick={handleClick}>
       {editState ? (
-        <input
-          className={dataItem.id}
-          onKeyPress={editItem}
-          defaultValue={dataItem.name}
-        />
+        <input onKeyPress={handleChange} defaultValue={dataItem.name} />
       ) : (
-        <p>{dataItem.name}</p>
+        <div>{dataItem.name}</div>
       )}
-      {/* delete */}
-      <button id={dataItem.id} style={buttonStyle} onClick={props.delete}>
-        X
-      </button>
-      {/* edit */}
-      <button onClick={changeEdit} style={buttonStyle}>
-        e
-      </button>
+      <button id="delete">x</button>
+      <button id="edit">e</button>
     </div>
   );
 };
