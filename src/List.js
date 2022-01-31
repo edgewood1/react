@@ -1,22 +1,18 @@
 import React from 'react';
 import './style.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { deleteItem, addItem, editItem } from './features/sampleSlice';
 
 const style = {
   display: 'flex',
 };
 
 const List = (props) => {
-  const { dataItem } = props;
-  const dispatch = useDispatch();
+  const { dataItem, handleUpdates } = props;
   const [editState, changeEditState] = React.useState(false);
 
   const handleClick = (e) => {
-    console.log(e.target.id);
     if (e.target.tagName !== 'INPUT') {
       e.target.id === 'delete'
-        ? dispatch(deleteItem(dataItem.id))
+        ? handleUpdates('deleteItem', dataItem.id)
         : changeEditState(!editState);
     }
   };
@@ -27,7 +23,7 @@ const List = (props) => {
         id: dataItem.id,
         name: e.target.value,
       };
-      dispatch(editItem(obj));
+      handleUpdates('editItem', obj);
       changeEditState(!editState);
     }
   };

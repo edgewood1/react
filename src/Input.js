@@ -1,14 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { addItem } from './features/sampleSlice';
 
-const Input = () => {
-  // sets state for function
+const Input = (props) => {
   const inputRef = React.useRef();
-  const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(addItem(inputRef.current.value));
+    props.handleUpdates('addItem', inputRef.current.value);
     inputRef.current.value = '';
   };
 
